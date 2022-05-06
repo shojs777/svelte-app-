@@ -7,6 +7,7 @@ import {
   GoogleAuthProvider,
   signOut,
 } from "firebase/auth";
+import { getStorage } from "firebase/storage";
 import { userId } from "../store";
 import Cookies from "js-cookie";
 
@@ -25,6 +26,7 @@ const app = initializeApp(firebaseConfig);
 const provider = new GoogleAuthProvider();
 const auth = getAuth();
 export const db = getFirestore(app);
+export const storage = getStorage(app);
 
 export const signInWithGoogle = () => {
   signInWithPopup(auth, provider)

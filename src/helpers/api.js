@@ -9,16 +9,31 @@ import {
   doc,
   updateDoc,
 } from "firebase/firestore";
+import { db, storage } from "./firebase";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import dayjs from "dayjs";
-import { db } from "./firebase";
-import { async } from "@firebase/util";
 // Add a new document with a generated id.
-export const postDiary = async (uid, body, rate) => {
+
+export const postDiary = async (uid = "", body = "", rate = 1, image = "") => {
+  let uploadResult = "";
+  if (image.name) {
+    const storageRef = ref(storage);
+    const ext = image.name.split(".").pop();
+    const hashName = Math.random().toString(36).slice(-8);
+    // Create a reference to 'images/mountains.jpg'
+    const uploadRef = ref(storageRef, `/images/${hashName}.${ext}`);
+    await uploadBytes(uploadRef, image).then(async (result) => {
+      console.log("Uploaded a file!" + result);
+      await getDownloadURL(uploadRef).then((url) => {
+        uploadResult = url;
+      });
+    });
+  }
   const docRef = await addDoc(collection(db, "diaries"), {
     uid: uid,
     rate: rate,
     body: body,
-    image: "",
+    image: uploadResult,
     createdAt: dayjs().format("YYYY/MM/DD HH:mm:ss"),
   });
   console.log("Document written with ID: ", docRef.id);
@@ -57,14 +72,42 @@ export const getDiary = async (id = "test") => {
     return false;
   }
 };
-export const updateDiary = async (id = "", body = "", rate = 1, image = "") => {
+export const updateDiary = async (
+  id = "",
+  body = "",
+  rate = 1,
+  image = null
+) => {
+  let uploadResult = "";
+  if (image.name) {
+    const storageRef = ref(storage);
+    const ext = image.name.split(".").pop();
+    const hashName = Math.random().toString(36).slice(-8);
+    // Create a reference to 'images/mountains.jpg'
+    const uploadRef = ref(storageRef, `/images/${hashName}.${ext}`);
+    await uploadBytes(uploadRef, image).then(async (result) => {
+      console.log("Uploaded a file!" + result);
+      await getDownloadURL(uploadRef).then((url) => {
+        uploadResult = url;
+      });
+    });
+  }
   const diaryRef = doc(db, "diaries", id);
   if (!diaryRef) return false;
+  let updateData;
+  if (image.name) {
+    updateData = {
+      body: body,
+      rate: rate,
+      image: uploadResult,
+    };
+  } else {
+    updateData = {
+      body: body,
+      rate: rate,
+    };
+  }
   // Set the "capital" field of the city 'DC'
-  await updateDoc(diaryRef, {
-    body: body,
-    rate: rate,
-    image: image,
-  });
+  await updateDoc(diaryRef, updateData);
   return true;
 };

@@ -16,7 +16,7 @@ const submit=async()=>{
     return false;
   }
   console.log(uid,rate,body);
-  const result=await postDiary(uid,body,rate);
+  const result=await postDiary(uid,body,rate,image);
   if(!result){
     alert("日記が記録失敗");
   }else{
