@@ -39,6 +39,7 @@ export const signInWithGoogle = () => {
       userId.set(user.uid);
       Cookies.set("uid", user.uid);
       document.location.reload();
+      location.href = "/";
     })
     .catch((error) => {
       // Handle Errors here.
@@ -59,6 +60,7 @@ export const googleSignout = () => {
       Cookies.remove("uid");
       //画面を更新
       document.location.reload();
+      location.href = "/";
     })
     .catch((error) => {
       alert("ログアウトできませんでした");

@@ -62,7 +62,6 @@ if(result){
   <Slider min="1" max="10" bind:value={rate}/>
   <TextField label="日記の本文" class="bg-white-900" bind:value={body} textarea rows="5" outlined />
   <Button type="submit" class="text-white-900">日記を更新</Button>
-  <p>気分</p>
 </form>
 <Button class="bg-alert-900 text-white-900 mb-10" on:click={deleteHandle}>日記を削除</Button>
 {/await}

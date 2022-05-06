@@ -1,30 +1,40 @@
 <script>
 import {Router,Link}from "svelte-routing"
 import {signInWithGoogle}from "../helpers/firebase"
-import {Button,ProgressCircular} from "smelte";
+import {Button,ProgressCircular,TextField} from "smelte";
 import {userId}from "../store";
 import {fetch}from "../helpers/api";
 import { onMount,onDestroy } from "svelte";
 import StarRating from 'svelte-star-rating';
 import dayjs from "dayjs";
-let uid;
+let uid,filterMonth;
 const unsubscribe=userId.subscribe(id=>uid=id);
 let promise=fetch();
 onMount(async()=>{
   promise=await fetch(uid);
-  console.log(promise);
+  // console.log(promise);
 })
 onDestroy(()=>{
   unsubscribe;
 })
+const filterHandle=async()=>{
+  // console.log(filterMonth);
+  promise=await fetch(uid,filterMonth);
+  }
 </script>
+<p>Home</p>
 {#if !uid}
 <Button class="text-white-900 mt-10" on:click={signInWithGoogle}>ログインする</Button>
 {:else}
+<section>
+  <h5>日記を書いた月で検索</h5>
+  <TextField label="月で絞り込み"type="month" bind:value={filterMonth} on:change={filterHandle}/>
+</section>
 {#await promise}
 <p class="mt-10 flex justify-center"><ProgressCircular/></p>
 <p>Loading ...</p>
 {:then diaries}
+{#if diaries.length>0}
 <Router>
   {#each diaries as d}
     <Link to={"/diary/"+d.id} class="flex items-center mb-6 hover:bg-violet-600 active:bg-violet-700 focus:outline-none focus:ring focus:ring-violet-300">
@@ -37,7 +47,9 @@ onDestroy(()=>{
     </Link>
   {/each}
 </Router>
-<p>Home</p>
+{:else}
+<p>日記が見つかりませんでした...</p>
+{/if}
 {/await}
 {/if}
 

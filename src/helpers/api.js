@@ -9,6 +9,7 @@ import {
   doc,
   updateDoc,
   deleteDoc,
+  limit,
 } from "firebase/firestore";
 import { db, storage } from "./firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
@@ -40,12 +41,25 @@ export const postDiary = async (uid = "", body = "", rate = 1, image = "") => {
   console.log("Document written with ID: ", docRef.id);
   return docRef.id ? true : false;
 };
-export const fetch = async (uid = "") => {
-  const q = query(
-    collection(db, "diaries"),
-    where("uid", "==", uid),
-    orderBy("createdAt", "desc")
-  );
+export const fetch = async (uid = "", filterMonth = null) => {
+  let q;
+  if (filterMonth) {
+    filterMonth = filterMonth.replace("-", "/");
+    q = query(
+      collection(db, "diaries"),
+      where("uid", "==", uid),
+      where("createdAt", ">=", filterMonth + "/01"),
+      where("createdAt", "<=", filterMonth + "/31"),
+      limit(31)
+    );
+  } else {
+    q = query(
+      collection(db, "diaries"),
+      where("uid", "==", uid),
+      orderBy("createdAt", "desc"),
+      limit(31)
+    );
+  }
   const querySnapshot = await getDocs(q);
   let diaries = [];
   querySnapshot.forEach((doc) => {
