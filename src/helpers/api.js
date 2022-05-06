@@ -8,6 +8,7 @@ import {
   orderBy,
   doc,
   updateDoc,
+  deleteDoc,
 } from "firebase/firestore";
 import { db, storage } from "./firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
@@ -109,5 +110,9 @@ export const updateDiary = async (
   }
   // Set the "capital" field of the city 'DC'
   await updateDoc(diaryRef, updateData);
+  return true;
+};
+export const deleteDiary = async (id) => {
+  await deleteDoc(doc(db, "diaries", id));
   return true;
 };

@@ -16,15 +16,14 @@
 
 {#if open}
 <nav class="bg-primary-900" on:click={()=> open = false}>
-  {uid}
   <Router>
-    <Link class="block" to="/">Home</Link>
-    <Link class="block" to="about">About</Link>
-    <Link class="block" to="create">Create</Link>
+    <Link class="block mb-3" to="/">ホーム</Link>
+    <Link class="block mb-3" to="about">日記の効果とは？</Link>
     {#if !uid}
-    <Link class="block" to="#" on:click={signInWithGoogle}>ログイン</Link>
+    <Link class="block mb-3" to="#" on:click={signInWithGoogle}>ログイン</Link>
     {:else}
-    <Link class="block" to="#" on:click={googleSignout}>ログアウト</Link>
+    <Link class="block mb-3" to="create">日記を書く</Link>
+    <Link class="block mb-3" to="#" on:click={googleSignout}>ログアウト</Link>
     {/if}
   </Router>
   <div class="bar" transition:scale={{ duration: 750, easing: quadOut, opacity: 1 }} />

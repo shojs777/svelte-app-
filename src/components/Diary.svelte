@@ -1,6 +1,6 @@
 <script>
 import{onMount}from "svelte"
-import { getDiary,updateDiary } from "../helpers/api"
+import { deleteDiary, getDiary,updateDiary } from "../helpers/api"
 import {Button,ProgressCircular,TextField,Slider} from "smelte";
 import dayjs from "dayjs";
 export let id;
@@ -18,7 +18,7 @@ const submit=async()=>{
     alert("更新に成功しました")
   }else{
     alert("更新できませんでした。やり直してください");
-    document.location.href("/");
+    document.location.href="/";
   }
 }
 const onFileSelect=(e)=>{
@@ -30,6 +30,16 @@ const onFileSelect=(e)=>{
     preview=e.target.result;
   }
 }
+const deleteHandle=async()=>{
+const result=await deleteDiary(id);
+if(result){
+  alert("削除が完了しました");
+  location.href="/";
+}else{
+  alert("日記の削除が失敗しました")
+  location.href="/";
+}
+}
 </script>
 
 <header><p>Diary</p></header>
@@ -38,7 +48,7 @@ const onFileSelect=(e)=>{
 <p>Loading ...</p>
 {:then diary}
 <h1 class="h4">{dayjs(diary.createdAt).format("YYYY年MM月DD日")}の日記</h1>
-<form class="p-5" on:submit|preventDefault={submit}>
+<form class="p-5 mb-10" on:submit|preventDefault={submit}>
   {#if !preview}
   <img class="mb-4" src={diary.image?diary.image:"/dummy.jpeg"} alt="diary" >
   {:else}
@@ -54,5 +64,6 @@ const onFileSelect=(e)=>{
   <Button type="submit" class="text-white-900">日記を更新</Button>
   <p>気分</p>
 </form>
+<Button class="bg-alert-900 text-white-900 mb-10" on:click={deleteHandle}>日記を削除</Button>
 {/await}
 
