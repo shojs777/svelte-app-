@@ -7,9 +7,11 @@ import {
   getDocs,
   orderBy,
   doc,
+  updateDoc,
 } from "firebase/firestore";
 import dayjs from "dayjs";
 import { db } from "./firebase";
+import { async } from "@firebase/util";
 // Add a new document with a generated id.
 export const postDiary = async (uid, body, rate) => {
   const docRef = await addDoc(collection(db, "diaries"), {
@@ -42,7 +44,7 @@ export const fetch = async (uid = "") => {
   });
   return diaries;
 };
-export const getDiary = async (id) => {
+export const getDiary = async (id = "test") => {
   const docRef = doc(db, "diaries", id);
   const docSnap = await getDoc(docRef);
 
@@ -54,4 +56,15 @@ export const getDiary = async (id) => {
     console.log("No such document!");
     return false;
   }
+};
+export const updateDiary = async (id = "", body = "", rate = 1, image = "") => {
+  const diaryRef = doc(db, "diaries", id);
+  if (!diaryRef) return false;
+  // Set the "capital" field of the city 'DC'
+  await updateDoc(diaryRef, {
+    body: body,
+    rate: rate,
+    image: image,
+  });
+  return true;
 };
