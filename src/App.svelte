@@ -11,7 +11,7 @@
 	import "./helpers/firebase";
 </script>
 
-<main class="bg-background-500">
+<main class="bg-background-500 dark:bg-dark-300">
 	<Header/>
 	<section class="content">
 		<Router url="{url}">
@@ -30,14 +30,8 @@
 		max-width: 640px;
 		margin: 0 auto;
 	}
-
-	/* h1 {
-		color: #ff3e00;
-		text-transform: uppercase;
-		font-size: 4em;
-		font-weight: 100;
-	} */
 	.content{
 		min-height: calc(100vh - 60px - 60px);
+		padding: 1rem;
 	}
 </style>

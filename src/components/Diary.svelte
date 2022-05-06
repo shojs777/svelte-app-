@@ -54,15 +54,15 @@ if(result){
   {:else}
 <img class="mb-4" src={preview} alt="diary" >
   {/if}
-  <label for="file-input" class="bg-primary-900 px-4 py-3 rounded w-4/12 block mb-6 m-auto">
+  <label for="file-input" class="bg-primary-900 px-4 py-3 rounded w-4/12 block mb-6 m-auto dark:bg-accent-600 dark-hover:bg-dark-700">
     画像を選択
   </label>
   <input type="file" accept="image/*" id="file-input" class="hidden" baind:this={image} on:change={(e)=>{onFileSelect(e)}}/>
   <p class="mb-4">今日の気分は{rate}点です</p>
   <Slider min="1" max="10" bind:value={rate}/>
   <TextField label="日記の本文" class="bg-white-900" bind:value={body} textarea rows="5" outlined />
-  <Button type="submit" class="text-white-900">日記を更新</Button>
+  <Button type="submit" class="text-white-900 dark:bg-accent-600 dark-hover:bg-dark-700">日記を更新</Button>
 </form>
-<Button class="bg-alert-900 text-white-900 mb-10" on:click={deleteHandle}>日記を削除</Button>
+<Button class="bg-alert-900 text-white-900 mb-10 dark:bg-alert-200 dark-hover:bg-dark-700" on:click={deleteHandle}>日記を削除</Button>
 {/await}
 

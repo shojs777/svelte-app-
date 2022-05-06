@@ -41,13 +41,13 @@ const onFileSelect=(e)=>{
 <form class="p-5" on:submit|preventDefault={submit}>
   <p class="mb-4">今日の気分は{rate}点です</p>
   <Slider min="1" max="10" bind:value={rate}/>
-  <TextField label="日記の本文" class="bg-white-900" bind:value={body} textarea rows="5" outlined />
+  <TextField label="日記の本文" class="bg-white-900 dark:bg-accent-200" bind:value={body} textarea rows="5" outlined />
   {#if preview}
     <img src={preview} alt="preview" class="mb-6"/>
   {/if}
-  <label for="file-input" class="bg-primary-900 px-4 py-3 rounded w-4/12 block mb-6 m-auto">
+  <label for="file-input" class="bg-primary-900 px-4 py-3 rounded w-4/12 block mb-6 m-auto dark:bg-accent-500 dark-hover:bg-dark-700">
     画像を選択
   </label>
   <input type="file" accept="image/*" id="file-input" class="hidden" baind:this={image} on:change={(e)=>{onFileSelect(e)}}/>
-  <Button type="submit" class="text-white-900">日記を保存</Button>
+  <Button type="submit" class="text-white-900 dark:bg-accent-500 dark-hover:bg-dark-700">日記を保存</Button>
 </form>

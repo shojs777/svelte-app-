@@ -15,7 +15,7 @@
   </script>
 
 {#if open}
-<nav class="bg-primary-900" on:click={()=> open = false}>
+<nav class="bg-primary-900 dark:bg-dark-900" on:click={()=> open = false}>
   <Router>
     <Link class="block mb-3" to="/">ホーム</Link>
     <Link class="block mb-3" to="about">日記の効果とは？</Link>
