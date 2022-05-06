@@ -8,7 +8,7 @@ let open;
 
 <header class="bg-primary-900 flex justify-between items-center">
   <Hamburger bind:open --color="white"/>
-  <img src="/logo.png" alt="logo">
+  <img src="/logo.png" alt="logo" on:click={()=>location.href="/"}>
   <link rel="stylesheet" href="https://fonts.sandbox.google.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
   <!-- <Number_732 class="mr-6 text-white-900"/> -->
   <span class="material-symbols-outlined mr-6 text-white-900">
