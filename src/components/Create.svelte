@@ -6,6 +6,7 @@ import {postDiary}from "../helpers/api";
 let rate=5;
 let body='';
 let uid=null;
+let image,preview="";
 
 const unsubscribe=userId.subscribe(id=>uid=id);
 
@@ -24,6 +25,16 @@ const submit=async()=>{
   }
 }
 onDestroy(()=>{unsubscribe});
+
+const onFileSelect=(e)=>{
+  let target=e.target.files[0];
+  image=target;
+  let render=new FileReader();
+  render.readAsDataURL(target);
+  render.onload=e=>{
+    preview=e.target.result;
+  }
+}
 </script>
 
 <h3>日記を書こう</h3>
@@ -31,5 +42,12 @@ onDestroy(()=>{unsubscribe});
   <p class="mb-4">今日の気分は{rate}点です</p>
   <Slider min="1" max="10" bind:value={rate}/>
   <TextField label="日記の本文" class="bg-white-900" bind:value={body} textarea rows="5" outlined />
+  {#if preview}
+    <img src={preview} alt="preview" class="mb-6"/>
+  {/if}
+  <label for="file-input" class="bg-primary-900 px-4 py-3 rounded w-4/12 block mb-6 m-auto">
+    画像を選択
+  </label>
+  <input type="file" accept="image/*" id="file-input" class="hidden" baind:this={image} on:change={(e)=>{onFileSelect(e)}}/>
   <Button type="submit" class="text-white-900">日記を保存</Button>
 </form>
